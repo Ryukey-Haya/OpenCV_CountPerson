@@ -4,11 +4,12 @@ import threading,time
 
 #動画を読込み
 #カメラ等でストリーム再生の場合は引数に0等のデバイスIDを記述する
-video = cv2.VideoCapture(0)
-video.set(cv2.CAP_PROP_FOURCC, cv2.VideoWriter_fourcc('H', '2', '6', '4'));
+#video = cv2.VideoCapture(2,cv2.CAP_DSHOW)
+video = cv2.VideoCapture(0,cv2.CAP_DSHOW)
+#video.set(cv2.CAP_PROP_FOURCC, cv2.VideoWriter_fourcc('H', '2', '6', '4'));
 video.set(cv2.CAP_PROP_FPS, 30)
 video.set(cv2.CAP_PROP_FRAME_WIDTH, 1280)
-video.set(cv2.CAP_PROP_FRAME_HEIGHT, 720)
+video.set(cv2.CAP_PROP_FRAME_HEIGHT, 1)
 
 
 #opencvのカスケードパス
@@ -55,7 +56,10 @@ while video.isOpened():
     if not ret: break
     height = frame.shape[0]
     width = frame.shape[1]
-    check=cv2.resize(frame,(int(width*0.25),int(height*0.25)))
+    #check=cv2.resize(frame,(int(width*0.25),int(height*0.25)))
+
+    check=cv2.resize(frame,(int(width*0.125),int(height*0.125)))
+
 
     gray=cv2.cvtColor(check,cv2.COLOR_BGR2GRAY)
     # 顔検出
@@ -69,7 +73,10 @@ while video.isOpened():
     # 顔を検出した場合
     if len(facerect) > 0:
         for rect in facerect:
-            cv2.rectangle(frame, tuple(rect[0:2]*4),tuple((rect[0:2] + rect[2:4])*4), rectangle_color, thickness=2)
+            #cv2.rectangle(frame, tuple(rect[0:2]*4),tuple((rect[0:2] + rect[2:4])*4), rectangle_color, thickness=2)
+
+            cv2.rectangle(frame, tuple(rect[0:2]*8),tuple((rect[0:2] + rect[2:4])*8), rectangle_color, thickness=2)
+
     #顔認識した人数
     cv2.putText(frame,"Human:{0}".format(len(facerect)),(10,100), cv2.FONT_HERSHEY_PLAIN, 3, (0,0,255), 2, cv2.LINE_AA)
     cv2.putText(frame,"FPS:{0}".format(fps),(10,200),cv2.FONT_HERSHEY_PLAIN,3,(255,0,0),2,cv2.LINE_AA)
