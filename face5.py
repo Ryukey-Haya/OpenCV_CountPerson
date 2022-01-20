@@ -14,7 +14,8 @@ app.prepare(ctx_id=0,det_size=(640,640))
 
 faces="0"
 nowtime=0
-waittime=20
+#10秒
+waittime=10
 timestate=False
 #0:wait 1:active
 fps=0
@@ -26,7 +27,7 @@ def POST(Data):
     #テスト
     url ="https://httpbin.org/post"
     #本番
-    #url="http://172.17.63.81:3000/api/posts"
+    #url="http://133.167.122.196:8080/api/posts"
     response=requests.post(url,json={"numPeople":Data})
     if(response.status_code==200):
         print("POST Success")
