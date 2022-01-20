@@ -49,13 +49,14 @@ while video.isOpened():
     height = frame.shape[0]
     width = frame.shape[1]
 
+    faces = app.get(np.asarray(frame))
+
     #顔認識した人数
     cv2.putText(frame,"Human:{0}".format(len(faces)),(10,100), cv2.FONT_HERSHEY_PLAIN, 3, (0,0,255), 2, cv2.LINE_AA)
     cv2.putText(frame,"FPS:{0}".format(fps),(10,200),cv2.FONT_HERSHEY_PLAIN,3,(255,0,0),2,cv2.LINE_AA)
 
     if not timestate:
         #POST用スレッド
-        faces = app.get(np.asarray(frame))
         Post_thread=threading.Thread(target=POST,args=(len(faces),))
         timestate=True
         nowtime=time.time()
@@ -65,6 +66,8 @@ while video.isOpened():
         timestate=False
 
     # フレームの描画
+    #cv2.imshow('frame', frame)
+    frame=app.draw_on(frame, faces)
     cv2.imshow('frame', frame)
 
     # qキーの押下で処理を中止
